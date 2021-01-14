@@ -1,4 +1,5 @@
 const express = require("express");
+const { updateOne } = require("../models/user");
 const User = require("../models/user");
 // create router
 const router = new express.Router();
@@ -47,6 +48,7 @@ router.get("/users/:id", async (req, res) => {
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "email", "age", "password"];
+  // return boolean true/false, if one or all value exsit(example: if in 10 values not exsist even one value -> false)
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
@@ -55,10 +57,10 @@ router.patch("/users/:id", async (req, res) => {
     return res.status(400).send({ error: "Invalid updates" });
 
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const user = await User.findById(req.params.id);
+
+    updates.forEach((update) => (user[update] = req.body[update]));
+    await user.save();
 
     if (!user) return res.status(404).send();
 
