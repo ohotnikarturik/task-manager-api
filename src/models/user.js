@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,6 +12,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     lowercase: true,
     validate(value) {
@@ -39,7 +41,41 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        require: true,
+      },
+    },
+  ],
 });
+
+// custom method(instance method) for generate user token and save it whe user login an sign up 
+userSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  const token = jwt.sign({ user: user._id.toString() }, "mytoken");
+  user.tokens = user.tokens.concat({ token });
+  await user.save();
+  return token;
+};
+
+// custom method(model method) to userSchema for login
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error("Unable to login");
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error("Unable to login");
+  }
+
+  return user;
+};
 
 // set the middleware and hash password before save user in database
 userSchema.pre("save", async function (next) {

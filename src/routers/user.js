@@ -4,15 +4,30 @@ const User = require("../models/user");
 // create router
 const router = new express.Router();
 
-// create user
-router.post("/users", async (req, res) => {
+// signup user
+router.post("/users/", async (req, res) => {
   const user = new User(req.body);
 
   try {
     await user.save();
-    res.status(201).send(user);
-  } catch (rrror) {
-    res.status(400).send();
+    const token = await user.generateAuthToken();
+    res.status(201).send({user, token});
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// login user
+router.post("/users/login", async (req, res) => {
+  try {
+    const user = await User.findByCredentials(req.body.email, req.body.password);
+    const token = await user.generateAuthToken();
+
+    res.send({user, token});
+  } catch (error) {
+    console.log('error', error)
+    
+    res.status(400).send()
   }
 });
 
