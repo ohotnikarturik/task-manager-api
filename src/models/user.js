@@ -51,10 +51,21 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+// this function will call automaticaly whenever object will stringify() by sending response
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+  
+  delete userObject.password
+  delete userObject.tokens
+
+  return userObject
+}
+
 // custom method(instance method) for generate user token and save it whe user login an sign up 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ user: user._id.toString() }, "mytoken");
+  const token = jwt.sign({ _id: user._id.toString() }, "mytoken");
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
