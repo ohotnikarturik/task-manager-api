@@ -11,13 +11,13 @@ const taskSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+    ref: 'User'
+  }
 });
 
-// set the middleware if need to do something in future with task properties
-// taskSchema.pre("save", async function (next) {
-//   const task = this;
-//   next()
-// });
 
 const Task = mongoose.model("Task", taskSchema);
 

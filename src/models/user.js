@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Task = require("./task")
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -51,18 +52,25 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+// to set vertual field tasks and make relationship between two entities user and task, then task can populate(retrieve) all tasks which were created by exact user id
+userSchema.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "owner",
+});
+
 // this function will call automaticaly whenever object will stringify() by sending response
 userSchema.methods.toJSON = function () {
-  const user = this
-  const userObject = user.toObject()
-  
-  delete userObject.password
-  delete userObject.tokens
+  const user = this;
+  const userObject = user.toObject();
 
-  return userObject
-}
+  delete userObject.password;
+  delete userObject.tokens;
 
-// custom method(instance method) for generate user token and save it whe user login an sign up 
+  return userObject;
+};
+
+// custom method(instance method) for generate user token and save it whe user login an sign up
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, "mytoken");
@@ -88,7 +96,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-// set the middleware and hash password before save user in database
+// set the middleware to hash password before save user in database
 userSchema.pre("save", async function (next) {
   const user = this;
 
@@ -98,6 +106,14 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+
+// set the middleware to delete user's tasks when user is removed
+userSchema.pre('remove', async function(next) {
+  const user = this
+  await Task.deleteMany({owner: user._id})
+
+  next()
+})
 
 const User = mongoose.model("User", userSchema);
 
