@@ -28,7 +28,6 @@ router.get("/tasks", auth, async (req, res) => {
 
   if (req.query.completed) {
     match.completed = req.query.completed === "true";
-    console.log("match.completed", match.completed);
   }
   
   if (req.query.sortBy) {

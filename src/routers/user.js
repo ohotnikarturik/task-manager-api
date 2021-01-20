@@ -1,8 +1,22 @@
 const express = require("express");
+const multer = require("multer");
+const sharp = require("sharp");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 // create router
 const router = new express.Router();
+// config multer
+const upload = multer({
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Please upload an Image"));
+    }
+    cb(undefined, true);
+  },
+});
 
 // signup user
 router.post("/users/", async (req, res) => {
@@ -62,21 +76,6 @@ router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
-// // find user by id
-// router.get("/users/:id", async (req, res) => {
-//   const _id = req.params.id;
-
-//   try {
-//     const user = await User.findById(_id);
-
-//     if (!user) return res.status(404).send();
-
-//     res.send(user);
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
-
 // update user by id
 router.patch("/users/me", auth, async (req, res) => {
   const updates = Object.keys(req.body);
@@ -105,6 +104,49 @@ router.delete("/users/me", auth, async (req, res) => {
     res.send(req.user);
   } catch (error) {
     res.status(500).send();
+  }
+});
+
+// create and update user's avatar image. Handle in case throw Error from multer middleware(send json message instead html)
+router.post(
+  "/users/me/avatar",
+  auth,
+  upload.single("avatar"),
+  async (req, res) => {
+    // resize and convert image to png
+    const buffer = await sharp(req.file.buffer)
+      .resize({ width: 250, height: 250 })
+      .png()
+      .toBuffer();
+
+    req.user.avatar = buffer;
+    await req.user.save();
+    res.send();
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
+
+// delete user's avatar
+router.delete("/users/me/avatar", auth, async (req, res) => {
+  req.user.avatar = undefined;
+  await req.user.save();
+  res.send();
+});
+
+// fetching avatar
+router.get("/users/:id/avatar", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user || !user.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/png");
+    res.send(user.avatar);
+  } catch (error) {
+    res.status(404).send();
   }
 });
 
