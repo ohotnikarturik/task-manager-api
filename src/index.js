@@ -5,7 +5,7 @@ const taskRouter = require("./routers/task");
 
 const app = express();
 // for deployment to heroku or development
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 // parsing incoming json objects
 app.use(express.json());
