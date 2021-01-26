@@ -19,8 +19,8 @@ function sendWelcomeEmail(email, name) {
     to: email,
     subject: "Thanks for joining in 😊!",
     text: `Welcome to our service, ${name}!`,
-    html: `<h5>Welcome to our service, ${name}!</h5>
-           <h3>Thank you for joining to Task Manager app!</h3>`,
+    html: `<h3>Welcome to our service, ${name}!</h3>
+           <h4>Thank you for joining to Task Manager app!</h4>`,
   });
 }
 
@@ -45,7 +45,7 @@ function sendDeleteEmail(email, name) {
 //     from: "arturdevaddress@gmail.com",
 //     subject: "Thanks for joining to Task Manager app",
 //     text: `Welcome to the app ${name}!`,
-//     html: `<h5>Welcome to the app ${name}!</h5>`,
+//     html: `<h3>Welcome to the app ${name}!</h3>`,
 //   });
 // };
 
