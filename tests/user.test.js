@@ -33,6 +33,27 @@ test("Sould signup a new user", async () => {
   expect(user.password).not.toBe("signupTest123");
 });
 
+test("Should not signup user with invalid name", async () => {
+  await request(app)
+    .post("/users")
+    .send({ email: "test@gmail.com", password: "testTest" })
+    .expect(400);
+});
+
+test("Should not signup user with invalid email", async () => {
+  await request(app)
+    .post("/users")
+    .send({ name: "MockName", email: "notvalidemail", password: "testTest" })
+    .expect(400);
+});
+
+test("Should not signup user with invalid password", async () => {
+  await request(app)
+    .post("/users")
+    .send({ name: "MockName", email: "test@gmail.com", password: "bad" })
+    .expect(400);
+});
+
 test("Should login existing user", async () => {
   const response = await request(app)
     .post("/users/login")
@@ -68,11 +89,39 @@ test("Should update valid user fields", async () => {
   expect(user.name).toEqual("New user nane");
 });
 
+test("Should not update user if unauthenticated", async () => {
+  await request(app).patch("/users/me").send({ name: "TestName" }).expect(401);
+});
+
 test("Should not update invalid user fields", async () => {
   await request(app)
     .patch("/users/me")
     .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
     .send({ location: "Espoo" })
+    .expect(400);
+});
+
+test("Should not update user with invalid name", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ name: "" })
+    .expect(400);
+});
+
+test("Should not update user with invalid email", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ email: "notValidEmail" })
+    .expect(400);
+});
+
+test("Should not update user with invalid password", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ password: "password" })
     .expect(400);
 });
 
@@ -100,6 +149,13 @@ test("Should delete account for user", async () => {
   expect(user).toBeNull();
 });
 
+test("Should not delete user if unauthenticated", async () => {
+  await request(app)
+    .delete("/users/me")
+    .send()
+    .expect(401);
+});
+
 test("Should not delete account for unauthenticated user", async () => {
   await request(app).delete("/users/me").send(userOne).expect(401);
 });
@@ -114,3 +170,4 @@ test("Should upload user profile", async () => {
   const user = await User.findById(userOneId);
   expect(user.avatar).toEqual(expect.any(Buffer));
 });
+
