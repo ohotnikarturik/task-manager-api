@@ -47,7 +47,6 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - Run: ```npm run dev```
 ### Enjoy 🙂 🎉
 
-
 ## Description
 
 ### Technology Stack
@@ -70,7 +69,7 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 2. __Secure routes__ : A route which ***cannot*** be accessed without authentication i.e. a server issued JSON Web Token (JWT) to that particular user is required for access. For all such routes the incoming request should have a request header of *'Authorization'* containing the string *'Bearer'* before the JWT:
 ```
 {
-    Authorization: 'Bearer <JWT>'
+  Authorization: 'Bearer <JWT>'
 }
 ```
 
@@ -81,10 +80,10 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - Provide a JSON as the request's body following the example and descriptions given below:
 ```
 {
-    "name": "John Doe",
-    "email": "john.doe@gmail.com",
-    "age": 27,
-    "password": "ILikeCats123"
+  "name": "John Doe",
+  "email": "john.doe@gmail.com",
+  "age": 27,
+  "password": "ILikeCats123"
 }
 ```
 - The data will then be validated for: 
@@ -95,16 +94,16 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - Upon validation of the data, a *201 response* will be sent by the app, along with the newly created user document on MongoDB :
 ```
 {
-    "user": {
-        "age": 27,
-        "_id": "<MongoDB issued unique-id>",
-        "name": "John Doe",
-        "email": "john.doe@gmail.com",
-        "createdAt": "2020-01-23T15:00:15.918Z",
-        "updatedAt": "2020-01-23T15:00:16.149Z",
-        "__v": 1
-    },
-    "token": "<Server issued JWT>"
+  "user": {
+    "age": 27,
+    "_id": "<MongoDB issued unique-id>",
+    "name": "John Doe",
+    "email": "john.doe@gmail.com",
+    "createdAt": "2020-01-23T15:00:15.918Z",
+    "updatedAt": "2020-01-23T15:00:16.149Z",
+    "__v": 1
+  },
+  "token": "<Server issued JWT>"
 }
 ```
 - Additional fields handled and added by MongoDB:
@@ -124,8 +123,8 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - Provide a JSON as the request's body following the example : 
 ```
 {
-	"email": "john.doe@gmail.com",
-	"password": "ILikeCats123"
+  "email": "john.doe@gmail.com",
+  "password": "ILikeCats123"
 }
 ```
 - The data will then be validated for against the existing data/documents in the database.
@@ -140,7 +139,7 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - A *200 response* will be returned by the app :
 ```
 {
-    "success": "Logged out successfully!"
+  "success": "Logged out successfully!"
 }
 ```
 - If failure, a *500 response* is returned.
@@ -165,13 +164,13 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 
 ```
 {
-    "age": 27,
-    "_id": "<MongoDB's User ID>",
-    "name": "John Doe",
-    "email": "john.doe@gmail.com",
-    "createdAt": "2020-01-23T10:37:50.056Z",
-    "updatedAt": "2020-01-23T10:37:50.338Z",
-    "__v": 1
+  "age": 27,
+  "_id": "<MongoDB's User ID>",
+  "name": "John Doe",
+  "email": "john.doe@gmail.com",
+  "createdAt": "2020-01-23T10:37:50.056Z",
+  "updatedAt": "2020-01-23T10:37:50.338Z",
+  "__v": 1
 }
 ```
 - A request failure can only indicate an internal server error i.e. the server might be under maintenance, therefore a *500 response* is returned.
@@ -183,22 +182,22 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - Provide a JSON as the request's body following the example and descriptions given for User creation to replace the existing data with the newly provided data :
 ```
 {
-	"name": "Jenny Doe",
-	"email": "jenny.doe@gmail.com",
-	"password": "ILikeDogs123"
+  "name": "Jenny Doe",
+  "email": "jenny.doe@gmail.com",
+  "password": "ILikeDogs123"
 }
 ```
 - Data not provided in the above request will be untouched/remain same.
 - Data validators will run again on the new data and if successful, a *200 response* is returned along with the newly updated document:
 ```
 {
-    "age": 27,
-    "_id": "<MongoDB's User ID>",
-    "name": "Jenny Doe",
-    "email": "jenny.doe@gmail.com",
-    "createdAt": "2020-01-23T15:00:15.918Z",
-    "updatedAt": "2020-01-23T15:23:19.000Z",
-    "__v": 3
+  "age": 27,
+  "_id": "<MongoDB's User ID>",
+  "name": "Jenny Doe",
+  "email": "jenny.doe@gmail.com",
+  "createdAt": "2020-01-23T15:00:15.918Z",
+  "updatedAt": "2020-01-23T15:23:19.000Z",
+  "__v": 3
 }
 ```
 - If the validators fail, a *400 response* is returned instead.
@@ -221,8 +220,8 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - Provide a JSON as the request's body following the example and descriptions given below:
 ```
 {
-	"description": "Learn NodeJS",
-	"completed": true
+  "description": "Learn NodeJS",
+  "completed": true
 }
 ```
 - Validators:
@@ -231,13 +230,13 @@ Has full fledged support for user login and sign up. Filter and sort your tasks 
 - Upon validation of the data, a *201 response* will be sent by the app, along with the newly created task document on MongoDB :
 ```
 {
-    "completed": true,
-    "_id": "<MongoDB issued task id>",
-    "description": "Learn NodeJS",
-    "owner": "<MongoDB issued user id>",
-    "createdAt": "2020-02-02T14:03:26.248Z",
-    "updatedAt": "2020-02-02T14:03:26.248Z",
-    "__v": 0
+  "completed": true,
+  "_id": "<MongoDB issued task id>",
+  "description": "Learn NodeJS",
+  "owner": "<MongoDB issued user id>",
+  "createdAt": "2020-02-02T14:03:26.248Z",
+  "updatedAt": "2020-02-02T14:03:26.248Z",
+  "__v": 0
 }
 ```
 - Additional fields handled and added by MongoDB:
@@ -280,24 +279,24 @@ __Example__ <br>
 
 ```
 [
-    {
-        "completed": true,
-        "_id": "//",
-        "description": "Learn NodeJS",
-        "owner": "//",
-        "createdAt": "2020-02-02T14:03:26.248Z",
-        "updatedAt": "2020-02-02T14:03:26.248Z",
-        "__v": 0
-    },
-    {
-        "completed": false,
-        "_id": "//",
-        "description": "Make coffee",
-        "owner": "//",
-        "createdAt": "2020-02-02T14:35:18.953Z",
-        "updatedAt": "2020-02-02T14:35:18.953Z",
-        "__v": 0
-    }
+  {
+    "completed": true,
+    "_id": "//",
+    "description": "Learn NodeJS",
+    "owner": "//",
+    "createdAt": "2020-02-02T14:03:26.248Z",
+    "updatedAt": "2020-02-02T14:03:26.248Z",
+    "__v": 0
+  },
+  {
+    "completed": false,
+    "_id": "//",
+    "description": "Make coffee",
+    "owner": "//",
+    "createdAt": "2020-02-02T14:35:18.953Z",
+    "updatedAt": "2020-02-02T14:35:18.953Z",
+    "__v": 0
+  }
 ]
 ```
 - Returns a *200 response* along with an array of all the matching task documents in accordance with the above query strings.
@@ -318,8 +317,8 @@ __Example__ <br>
 - A request with the required updates as the request's body should be sent. All the updates will be validated with the same validators as those when creating a task:
 ```
 {
-	"description": "Get Sleep",
-	"completed": false
+  "description": "Get Sleep",
+  "completed": false
 }
 ```
 - Updates allowed :
