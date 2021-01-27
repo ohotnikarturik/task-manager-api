@@ -10,17 +10,18 @@
 </p>
 <img src="https://img.shields.io/badge/made--by-Artur Okhotnichenko-purple?style=flat">
 
-***A Representational State Transfer API for managing all your tasks, built using MongoDB and Express***
+***A Representational State Transfer API for managing all user tasks, built using Node.js, Express.js and MongoDB***
 
 Manage all your tasks with the Task-Manager API.
 
-Has full fledged support for user login and sign up. Filter and sort your tasks with pagination. Upload image avatar, and a lot more features accessible with just some simple requests.
+Has full fledged support for user login and sign up. Filter and sort user tasks with pagination. Upload image avatar, and a lot more features accessible with just some simple requests.
 
 #### Live Demo on Heroku : https://ohotnikarturik-task-manager.herokuapp.com/
 
 #### Test all endpoints with [Postman](https://www.postman.com/): 
 - Postman is free, a popular API client that makes it easy for developers to create, share, test and document APIs.
-#### View all data on Database GUI Viewer: [Mongodb Compass](https://www.mongodb.com/products/compass)
+#### View all data on Database GUI Viewer with [Mongodb Compass](https://www.mongodb.com/products/compass)
+#### Send email with [Send Grid](https://sendgrid.com/)
 
 ### Usage
 - Clone repo
