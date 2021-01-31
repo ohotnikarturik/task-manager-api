@@ -269,8 +269,6 @@ Has full fledged support for user login and sign up. Filter and sort user tasks 
             Brings 10 tasks without skipping any i.e. bring the first 10 tasks.
             - For the second page : *l* = 10 and *s* = 10 <br>
             Brings 10 tasks with skipping the first 10 (displayed on the first page) i.e. bring the next 10 tasks *(11 - 20)*
-            - For the *nth* page : <br>
-            limit = *l* <br>skip = *(n - 1) x l*
     3. Sorts the matching tasks by the specified property in a particular order. If not specified the ascending/asc order is followed. Order :
         - __asc__ : Sorts the found tasks in ascending order
         - __desc__ : Sorts the found tasks in descending order       
